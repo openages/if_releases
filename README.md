@@ -1,6 +1,6 @@
 # IF
 
-Beyond intelligence, ai with body.
+Beyond intelligence, AI with body.
 
 ## Features
 
