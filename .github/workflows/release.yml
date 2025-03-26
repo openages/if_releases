@@ -35,7 +35,7 @@ jobs:
                     with:
                           node-version: 23.5.0
 
-                  - name: Setup Python
+                  - name: Setup python
                     uses: actions/setup-python@v4
                     with:
                           python-version: 3.9
@@ -47,6 +47,15 @@ jobs:
 
                   - name: Install deps
                     run: pnpm install
+
+                  - name: MacOS:Import Apple Certificate (Developer ID)
+                    env:
+                          APPLE_CERTIFICATE: ${{ secrets.DEVELOPER_ID_CERTIFICATE }}
+                          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.DEVELOPER_ID_PASSWORD }}
+                    run: |
+                          echo "$APPLE_CERTIFICATE" | base64 --decode -o certificate.p12
+                          security import certificate.p12 -k ~/Library/Keychains/login.keychain-db -P "$APPLE_CERTIFICATE_PASSWORD"
+                          security set-key-partition-list -S apple-tool:,apple: -s -k "$APPLE_CERTIFICATE_PASSWORD" ~/Library/Keychains/login.keychain-db
 
                   - name: MacOS:Build on
                     if: matrix.platform == 'macos-latest'
