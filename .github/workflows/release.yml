@@ -40,6 +40,9 @@ jobs:
                     with:
                           version: 9
 
+                  - name: Install deps
+                    run: pnpm install
+
                   - name: Build on macOS
                     if: matrix.platform == 'macos-latest'
                     run: pnpm run release:mac
