@@ -30,5 +30,15 @@ jobs:
                           token: ${{ secrets.IF_ELECTRON_ACCESS_TOKEN }}
                           ref: master
 
-                  - name: List files in current directory
-                    run: ls -l
+                  - name: Run command based on OS
+                    run: |
+                          if [[ "$RUNNER_OS" == "Linux" ]]; then
+                          echo "Linux"
+                          elif [[ "$RUNNER_OS" == "Windows" ]]; then
+                          echo "Windows"
+                          elif [[ "$RUNNER_OS" == "macOS" ]]; then
+                          echo "macOS"
+                          else
+                          echo "Unsupported OS"
+                          fi
+                          shell: bash
