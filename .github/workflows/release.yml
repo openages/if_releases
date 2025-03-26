@@ -38,7 +38,7 @@ jobs:
                   - name: Setup Python
                     uses: actions/setup-python@v4
                     with:
-                          python-version: 3.12
+                          python-version: 3.9
 
                   - name: Setup pnpm
                     uses: pnpm/action-setup@v4
@@ -48,15 +48,20 @@ jobs:
                   - name: Install deps
                     run: pnpm install
 
-                  - name: Build on macOS
+                  - name: MacOS:Build on
                     if: matrix.platform == 'macos-latest'
                     run: pnpm run release:mac
 
-                  - name: Build on windows
+                  - name: Windows:Build
                     if: matrix.platform == 'windows-latest'
                     run: |
                           pnpm run id:win
                           pnpm run clean_win_release
+
+                  - name: windows:Remove blockmap
+                    if: matrix.platform == 'windows-latest'
+                    shell: pwsh
+                    run: rm release/win32/x64/*.blockmap
 
                   - name: Upload on windows
                     if: matrix.platform == 'windows-latest'
