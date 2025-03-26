@@ -1,0 +1,30 @@
+name: Release
+
+on:
+      workflow_dispatch:
+            inputs:
+
+jobs:
+      build_and_release:
+            permissions:
+                  contents: write
+
+            strategy:
+                  fail-fast: false
+                  matrix:
+                        include:
+                              - platform: macos-latest
+                                args: '--target x86_64-apple-darwin'
+                                name: macOS Intel
+                              - platform: 'windows-latest'
+                                args: ''
+                                name: Windows x64
+
+            name: ${{ matrix.name }}
+            runs-on: ${{ matrix.platform }}
+            steps:
+                  - name: Check out project
+                    uses: actions/checkout@v4
+                    with:
+                          repository: openages/if_electron
+                          token: ${{ github.token }}
