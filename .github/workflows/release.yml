@@ -30,16 +30,15 @@ jobs:
                           token: ${{ secrets.IF_ELECTRON_ACCESS_TOKEN }}
                           ref: master
 
-                  - name: Setup pnpm
-                    uses: pnpm/action-setup@v4
-                    with:
-                          version: 9
-
                   - name: setup node
                     uses: actions/setup-node@v4
                     with:
                           node-version: 23.5.0
-                          cache: 'pnpm'
+
+                  - name: Setup pnpm
+                    uses: pnpm/action-setup@v4
+                    with:
+                          version: 9
 
                   - name: Build on macOS
                     if: matrix.platform == 'macos-latest'
