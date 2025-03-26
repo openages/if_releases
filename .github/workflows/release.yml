@@ -29,3 +29,6 @@ jobs:
                           repository: openages/if_electron
                           token: ${{ secrets.IF_ELECTRON_ACCESS_TOKEN }}
                           ref: master
+
+                  - name: List files in current directory
+                    run: ls -l
