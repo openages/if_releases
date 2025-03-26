@@ -35,6 +35,11 @@ jobs:
                     with:
                           node-version: 23.5.0
 
+                  - name: Setup Python
+                    uses: actions/setup-python@v4
+                    with:
+                          python-version: '3.12'
+
                   - name: Setup pnpm
                     uses: pnpm/action-setup@v4
                     with:
