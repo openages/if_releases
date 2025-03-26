@@ -28,3 +28,4 @@ jobs:
                     with:
                           repository: openages/if_electron
                           token: ${{ github.token }}
+                          ref: master
