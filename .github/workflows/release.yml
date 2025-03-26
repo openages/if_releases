@@ -15,10 +15,10 @@ jobs:
                         include:
                               - platform: macos-latest
                                 args: '--target x86_64-apple-darwin'
-                                name: macOS Intel
+                                name: MacOS (Intel)
                               - platform: 'windows-latest'
                                 args: ''
-                                name: windows x64
+                                name: Windows (x64)
 
             name: ${{ matrix.name }}
             runs-on: ${{ matrix.platform }}
@@ -30,11 +30,34 @@ jobs:
                           token: ${{ secrets.IF_ELECTRON_ACCESS_TOKEN }}
                           ref: master
 
+                  - name: setup node
+                    uses: actions/setup-node@v4
+                    with:
+                          node-version: 23.5.0
+                          cache: 'pnpm'
+
+                  - name: Setup pnpm
+                    uses: pnpm/action-setup@v4
+                    with:
+                          version: 9
+
                   - name: Build on macOS
                     if: matrix.platform == 'macos-latest'
-                    run: echo "macOS"
+                    run: pnpm run release:mac
 
                   - name: Build on windows
                     if: matrix.platform == 'windows-latest'
-                    shell: pwsh
-                    run: Write-Host "windows"
+                    run: |
+                          pnpm run id:win
+                          pnpm run clean_win_release
+
+                  - name: Upload on windows
+                    if: matrix.platform == 'windows-latest'
+                    uses: ryand56/r2-upload-action@latest
+                    with:
+                          r2-account-id: ${{ secrets.R2_ACCOUNT_ID }}
+                          r2-access-key-id: ${{ secrets.R2_ACCESS_KEY_ID }}
+                          r2-secret-access-key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+                          r2-bucket: ${{ secrets.R2_BUCKET }}
+                          source-dir: release/win32/x64
+                          destination-dir: release/win32/x64
