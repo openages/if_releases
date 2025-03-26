@@ -18,7 +18,7 @@ jobs:
                                 name: macOS Intel
                               - platform: 'windows-latest'
                                 args: ''
-                                name: Windows x64
+                                name: windows x64
 
             name: ${{ matrix.name }}
             runs-on: ${{ matrix.platform }}
@@ -30,14 +30,11 @@ jobs:
                           token: ${{ secrets.IF_ELECTRON_ACCESS_TOKEN }}
                           ref: master
 
-                  - name: Run command based on OS
-                    run: |
-                          if [[ "$RUNNER_OS" == "Linux" ]]; then
-                          echo "Linux"
-                          elif [[ "$RUNNER_OS" == "Windows" ]]; then
-                          echo "Windows"
-                          elif [[ "$RUNNER_OS" == "macOS" ]]; then
-                          echo "macOS"
-                          else
-                          echo "Unsupported OS"
-                          fi
+                  - name: Build on macOS
+                    if: matrix.platform == 'macos-latest'
+                    run: echo "macOS"
+
+                  - name: Build on windows
+                    if: matrix.platform == 'windows-latest'
+                    shell: pwsh
+                    run: Write-Host "windows"
