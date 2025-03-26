@@ -52,10 +52,15 @@ jobs:
                     env:
                           APPLE_CERTIFICATE: ${{ secrets.DEVELOPER_ID_CERTIFICATE }}
                           APPLE_CERTIFICATE_PASSWORD: ${{ secrets.DEVELOPER_ID_PASSWORD }}
+                          KEYCHAIN_PASSWORD: ${{ secrets.MACOS_KEYCHAIN_PASSWORD }}
                     run: |
-                          echo "$APPLE_CERTIFICATE" | base64 --decode -o certificate.p12
-                          security import certificate.p12 -k ~/Library/Keychains/login.keychain-db -P "$APPLE_CERTIFICATE_PASSWORD"
-                          security set-key-partition-list -S apple-tool:,apple: -s -k "$APPLE_CERTIFICATE_PASSWORD" ~/Library/Keychains/login.keychain-db
+                          echo $APPLE_CERTIFICATE | base64 --decode > certificate.p12
+                          security create-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
+                          security default-keychain -s build.keychain
+                          security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
+                          security import certificate.p12 -k build.keychain -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+                          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
+                          security find-identity -v -p codesigning build.keychain
 
                   - name: MacOS:Build on
                     if: matrix.platform == 'macos-latest'
