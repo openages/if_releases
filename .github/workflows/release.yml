@@ -27,5 +27,5 @@ jobs:
                     uses: actions/checkout@v4
                     with:
                           repository: openages/if_electron
-                          token: ${{ github.token }}
+                          token: ${{ secrets.IF_ELECTRON_ACCESS_TOKEN }}
                           ref: master
