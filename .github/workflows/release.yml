@@ -51,12 +51,14 @@ jobs:
 
                   - name: Get version
                     id: version
+                    shell: bash
                     run: |
                           VERSION=$(node -p "require('./package.json').version")
-                          echo "::set-output name=value::$VERSION"
+                          echo "app_version=$VERSION" >> $GITHUB_ENV
+                          echo "value=$VERSION" >> $GITHUB_OUTPUT
 
                   - name: Show version
-                    run: echo "App version is v${{ steps.version.outputs.value }}"
+                    run: echo "App version is v$app_version"
 
                   - name: Install deps
                     run: pnpm install
@@ -76,7 +78,7 @@ jobs:
                           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
                           security find-identity -v -p codesigning build.keychain
 
-                  - name: MacOS:Build on
+                  - name: MacOS:Build and upload
                     if: matrix.platform == 'macos-latest'
                     run: pnpm run release:mac
 
@@ -105,6 +107,7 @@ jobs:
                           destination-dir: release/win32/x64
 
                   - name: Windows:Upload to artifact
+                    if: matrix.platform == 'windows-latest'
                     uses: actions/upload-artifact@v4
                     with:
                           name: windows_artifact
