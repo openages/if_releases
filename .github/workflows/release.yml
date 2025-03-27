@@ -58,6 +58,7 @@ jobs:
                           echo "value=$VERSION" >> $GITHUB_OUTPUT
 
                   - name: Show version
+                    shell: bash
                     run: echo "App version is v$app_version"
 
                   - name: Install deps
