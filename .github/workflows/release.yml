@@ -84,6 +84,7 @@ jobs:
                     run: pnpm run release:mac
 
                   - name: MacOS:Upload to artifact
+                    if: matrix.platform == 'macos-latest'
                     uses: actions/upload-artifact@v4
                     with:
                           name: macos_artifact
@@ -113,7 +114,9 @@ jobs:
                     with:
                           name: windows_artifact
                           compression-level: 0
-                          path: release/**/IF-*.exe
+                          path: |
+                                release/**/IF-*.exe
+                                !release/**/*.blockmap
 
       github_release:
             runs-on: ubuntu-latest
@@ -124,6 +127,9 @@ jobs:
                     with:
                           path: ./artifacts
                           merge-multiple: true
+
+                  - name: List artifacts directory
+                    run: ls -R ./artifacts/
 
                   - name: Make github release
                     uses: softprops/action-gh-release@v2
