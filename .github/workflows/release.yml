@@ -80,7 +80,7 @@ jobs:
                     if: matrix.platform == 'macos-latest'
                     run: pnpm run release:mac
 
-                  - name: MacOS:Upload artifact
+                  - name: MacOS:Upload to artifact
                     uses: actions/upload-artifact@v4
                     with:
                           name: macos_artifact
@@ -93,12 +93,7 @@ jobs:
                           pnpm run id:win
                           pnpm run clean_win_release
 
-                  - name: Windows:Remove blockmap
-                    if: matrix.platform == 'windows-latest'
-                    shell: pwsh
-                    run: rm release/win32/x64/*.blockmap
-
-                  - name: Upload on windows
+                  - name: Windows:Upload to r2
                     if: matrix.platform == 'windows-latest'
                     uses: ryand56/r2-upload-action@latest
                     with:
@@ -109,14 +104,14 @@ jobs:
                           source-dir: release/win32/x64
                           destination-dir: release/win32/x64
 
-                  - name: MacOS:Upload artifact
+                  - name: Windows:Upload to artifact
                     uses: actions/upload-artifact@v4
                     with:
                           name: windows_artifact
                           compression-level: 0
                           path: release/**/IF-*.exe
 
-      check_matrix:
+      github_release:
             runs-on: ubuntu-latest
             needs: build_and_release
             steps:
@@ -129,6 +124,6 @@ jobs:
                   - name: Make github release
                     uses: softprops/action-gh-release@v2
                     with:
-                          body: "[Read IF v${{ needs.build_and_release.outputs.version }}'s release notes on IF's changelog](https://if.openages.com/changelog)"
+                          body: "[Read IF v${{ needs.build_and_release.outputs.version }}'s release notes](https://if.openages.com/changelog)"
                           tag_name: v${{ needs.build_and_release.outputs.version }}
                           files: ./artifacts/*
