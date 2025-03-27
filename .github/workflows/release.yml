@@ -119,6 +119,9 @@ jobs:
                                 !release/**/*.blockmap
 
       github_release:
+            permissions:
+                  contents: write
+
             runs-on: ubuntu-latest
             needs: build_and_release
             steps:
