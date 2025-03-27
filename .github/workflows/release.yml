@@ -125,7 +125,7 @@ jobs:
                   - name: Download artifact
                     uses: actions/download-artifact@v4
                     with:
-                          path: ./artifacts
+                          path: artifacts
                           merge-multiple: true
 
                   - name: List artifacts directory
@@ -136,4 +136,4 @@ jobs:
                     with:
                           body: "[Read IF v${{ needs.build_and_release.outputs.version }}'s release notes](https://if.openages.com/changelog)"
                           tag_name: v${{ needs.build_and_release.outputs.version }}
-                          files: ./artifacts/*
+                          files: artifacts/**
