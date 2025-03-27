@@ -32,7 +32,7 @@ jobs:
                           token: ${{ secrets.IF_ELECTRON_ACCESS_TOKEN }}
                           ref: master
 
-                  - name: setup node
+                  - name: Setup node
                     uses: actions/setup-node@v4
                     env:
                           NODE_OPTIONS: '--max_old_space_size=4096'
