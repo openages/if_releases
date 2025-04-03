@@ -1,12 +1,15 @@
 # IF
 
-Beyond intelligence, AI with body.
+Local first desktop app for todo, schedule, note and pomodoro. https://if.openages.com
 
 ## Features
 
-- Generative todos, notes, schedules, pomos
-- Chat with OpenAI, Anthropic, Google AI, Groq, Ollama etc
-- Multi-tab
+- Todo with list view, kanban view, square view, mindmap view, table view and flat view, support auto archive.
+- Most simple and beautiful Markdown editor called Note
+- Schedule with week view, timeline view, month view and fixed view
+- Minimalist pomodoro timer for mindflow
+- Parse your most doc to markdown with Doc Parse miniapp
+- Multi-tab system
 
 ## Downloads
 
