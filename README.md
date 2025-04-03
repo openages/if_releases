@@ -1,6 +1,6 @@
 # IF
 
-Local first desktop app for todo, schedule, note and pomodoro. https://if.openages.com
+Minimalist, local first gtd desktop app for todo, schedule, note and pomodoro. https://if.openages.com
 
 ## Features
 
